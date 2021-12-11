@@ -1,0 +1,33 @@
+
+
+         NOTES for using the SKick program on an Amiga A1200 machine
+         ===========================================================
+
+These notes were written after debugging SKick to operate correctly on the
+A1200 machine.
+
+Skick was debugged on a plain A1200 with following configuration:
+
+	- CPU 68020, no FPU, no MMU
+	- 2 Meg Chip RAM, no other RAM
+	- 80M Maxtor Hard Drive supplied by GVP
+
+On this machine, two troubles have occured against the A500/600.
+
+1)  OS  3.0 normally allocates its supervisor stack from the top of Chip RAM, if
+no Fast RAM is available.  This prevents SKick from loading the kickstart to the
+top of RAM, and it is loaded 1/2M below, instead.  This causes RAM fragmentation
+and decreases the largest available block size.  To avoid this problem, RELSTACK
+option  has  been  added  to  the SKick.  When active, this option allocates new
+space  for  the  supervisor  stack from the public memory and moves the stack to
+this  new place, finally freeing the original memory and making it available for
+the kickstart.
+
+2)  When  loading  kickstarts  not designed for A1200, they will not support the
+A1200  specific  hardware  like  HD, PCMCIA etc.  It is the case of the 1.3 sys-
+tem.   In  this  case,  only  the diskette drives will be usable.  No simple way
+exists  to  solve  this problem, only to write new devices support for the obso-
+lete  OS.   A1200  hardware  hasn't the form of expansion boards, it is simply a
+part  of its ROM, so there is not a possibility to transfer the hardware support
+to the RAM kickstart like in a case of a standard expansion board.
+

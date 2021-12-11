@@ -1,0 +1,32 @@
+
+
+
+	NOTES for using the SKick program with the GVP A530 Turbo 
+	=========================================================
+
+These notes were written after some experiences with the GVP A530 Turbo Harddisk.
+
+SKick was tested on a machine with following configuration:
+
+	- Amiga A500+, 2.04 ROM, 2Megs of Chip RAM
+	- GVP A530 Turbo Harddisk 120MB, CPU 68EC030, no FPU, 5 MB 32bit RAM.
+
+On this system, SKick works fine. FASTRES option may be specified without 
+problems. Skick doesn't do anything with A530's 'pseudo-MMU', it is turned off
+during reboot. Care must be taken to remove GVPCpuCtrl command with FASTROM
+option from Startup-Sequence. This command causes that the image loaded by SKick
+doesn't survive reboot. Both caches may be turned on in burst mode as usual.
+
+	Do You see unusual memory capacity 5 Megs of 32 bit RAM ?
+Yes, You're thinking right, this capacity is obtained by installing 1 piece
+of 4 Meg SIMM into the system and reinstalling the original 1 Meg one to the
+second, free socket. The jumpers must be set to the position '4 M SIMMs'.
+After this is done, system reports 8 Megs of expansion RAM. This is of course
+wrong. The problem is that the GVP hardware doesn't recognize our cheat and
+the system memory check is too primitive to find it. When this situation
+is not handled by additional software support, system will crash after filling
+the first 'real' 5 Megs. Skick from the release 3.33 handles this situation
+correctly. Special switch CORR5M is added to support it. When specified, it re-
+moves extra 3 Megs from the end of the expansion memory space. Note that various
+tools will report the board as 8 Meg even with this option active, but Avail
+or any other memory checking tool will report 5 Megs correctly.
